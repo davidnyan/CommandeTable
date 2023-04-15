@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}  
+{% block title %}
+   Les Ventes
+{% endblock %}
+{% block content %}
+{% include 'layouts/nav.html' %}
+
+<main class=" py-5 px-1" id="main">
+    <div class="py-5">
+
+        {% if user.is_superuser %}
+        <form class="row g-3"  method="post" enctype="multipart/form-data" action="{% url 'show_sale' %}" >
+            {% csrf_token %}
+            <div class="col-auto">
+              <label for="date" class="">Date debut</label>
+              <input type="date" class="form-control" name="datet" required >
+            </div>
+            <div class="col-auto">
+                <label for="datet" class="">Date fin</label>
+              <input type="date" class="form-control" name="datet1" required>
+            </div>
+            <div class="col-auto">
+                <label for="">Serveur</label>
+                <select name="serveur" id="" class="form-control">
+                    <option value="">Choisir...</option>
+                    {% for i in usernom %}
+                    <option value="{{i.username}}">{{i.username}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="" class=""></label>
+              <button type="submit" class=" form-control btn btn-primary mb-3">Voir le rapport</button>
+            </div>
+          </form>
+        
+        {% else %}
+
+        <form class="row g-3"  method="post" enctype="multipart/form-data" action="{% url 'show_sale' %}" >
+            {% csrf_token %}
+            <div class="col-auto">
+              <label for="date" class="">Date debut</label>
+              <input type="date" class="form-control" name="datet" required >
+            </div>
+            <div class="col-auto">
+                <label for="datet" class="">Date fin</label>
+              <input type="date" class="form-control" name="datet1" required>
+            </div>
+            <div class="col-auto visually-hidden">
+              <input type="text" class="form-control" name="serveur" value="{{user.username}}">
+            </div>
+            <div class="col-auto">
+                <label for="" class=""></label>
+              <button type="submit" class=" form-control btn btn-success mb-3">Voir le rapport</button>
+            </div>
+          </form>
+          {%endif%}
+            <table class="table text-white table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>N° vente</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Serveur</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in order_items %}
+                    <tr >
+                        <td> <p class="text-white"><a href="{% url 'detail_sale' item.id %}" class="nav-link text-info"><strong>{{ item.id }}</p></td>
+                        <td><p class="text-white">{{ item.date_added|date:"d-m-Y" }}</p></td>
+                        <td><p class="text-white">{{ item.date_added|time:"H\h i\m" }}</p></td>
+                        <td><p class="text-white">{{ item.Serveur}}</p></td>
+                        <td><p class="text-white">{{ item.Total|floatformat:"g"}}</p></td>
+                        
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <p class="text-white">Total {{sub_total|floatformat:"g"}} </p>
+        </div>      
+        </main> 
+{% endblock %}

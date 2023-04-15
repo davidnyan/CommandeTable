@@ -1,0 +1,50 @@
+{% extends 'layouts/base.html' %}  
+{% block content %}
+{% include 'layouts/nav.html' %}
+<main class=" py-5 px-1" id="main">
+    <div class="py-5">
+            {% if cart_item_count %}
+            <table class="table text-white table-striped table-responsive">
+                <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Prix</th>
+                    <th>Qte</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td> <p class="text-white">{{ item.product.name }}</p></td>
+                        <td> <p class="text-white">{{ item.price|floatformat:"g" }}</p></td>
+                        <td> <p class="text-white">{{ item.quantity }}</p></td>
+                        <td>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <input class="visually-hidden" type="hidden" name="quantity" value="{{ item.quantity }}">
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                <input type="submit" name="submit" class="btn btn btn-primary" value="+"  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                <input type="submit" name="submit" class="btn btn btn-primary" value="-" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> 
+                                <input type="submit" name="submit" class="btn btn-danger" value="X" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            </form>  
+                        </td>
+                        <td class="visually-hidden">{{ item.total_cost|floatformat:"g" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <p>Total {{ cart_subtotal|floatformat:"g" }} </p>
+            <a href="{% url 'index' %}" class="btn btn-primary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Contunier commade</a>
+            {% if cart_item_count %}
+                    <a href="{% url 'checkout' %}" class="btn btn-success" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Valider commande</a>
+                        {% endif %}
+
+            {% else %}
+                <p>Panier vide</p>
+            {% endif %}
+        </div>
+</div>
+</main>
+
+{% endblock %}

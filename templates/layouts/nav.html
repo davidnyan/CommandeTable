@@ -1,0 +1,26 @@
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="{% url 'index' %}">Wakandaplus</a></h1>
+      
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a href="{% url 'index' %}">Menu</a></li>
+
+          <li>
+            <a href="{% url 'show_cart' %}" class="position-relative"> Panier <span class="badge text-bg-danger">{{ cart_item_count }}</span></a>
+            </li>
+
+          {% if user.is_authenticated %}
+          <li><a class="" href="{% url 'show_order' %}">Commande</a></li>
+          <li><a class="" href="{% url 'show_sale' %}">Vente</a></li>
+            {% else %}
+            
+            {%endif%}
+
+            
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+    </div>
+  </header><!-- End Header -->

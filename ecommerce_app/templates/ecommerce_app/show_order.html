@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}  
+{% block content %}
+{% include 'layouts/nav.html' %}
+<main class=" py-5 px-1" id="main">
+    <div class="py-5">
+        <table class=" table text-white table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>N° Commande</th>
+                    <th>Table</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Total</th>
+                    <th>Encours</th>
+                    <th>Serveur</th>
+                    <th></th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in order_items %}
+                    <tr >
+                        <td> <p class="text-white"><a href="{% url 'detail_order' item.id %}" class="nav-link text-info"><strong>{{ item.id }}</strong></a>    </p> </td>
+                        <td><p class="text-white">{{ item.Table }}</p> </td>
+                        <td><p class="text-white">{{ item.date_added|date:"SHORT_DATE_FORMAT" }}</p> </td>
+                        <td><p class="text-white">{{ item.date_added|time:"H\h i\m" }}</p></td>
+                        <td><p class="text-white">{{ item.Total|floatformat:"g"}}</p></td>
+                        {% if item.encourspreparation %}
+                        <td><span class="badge bg-success text-success  ">o</span></td>
+                             {% else %}
+                             <td><span class="badge bg-danger text-danger ">o</span></td>
+                            {% endif %} 
+                                <td><p class="text-white">{{ item.Serveur}}</p></td>        
+                        <td>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <input class="visually-hidden" type="text" name="item_Serveur" value="{{user.username}}">
+                                <input class="visually-hidden" type="text" name="item_id" value="{{ item.id }}">
+                                <input type="submit" name="submit" class="btn btn btn-primary" value="encours"  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            </form>  
+                        </td>
+                        <td>
+                            <form action="{% url 'sale'%}" method="post">
+                                {% csrf_token %}
+                                <input class="visually-hidden" type="text" name="Total" value="{{ item.total_cost }}">
+                                <input class="visually-hidden" type="text" name="Serveur" value="{{user.username}}">
+                                <input class="visually-hidden" type="text" name="order_id" value="{{ item.id }}">
+                                <button type="submit" class="btn btn btn-success" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">vendre</button>
+                            </form>  
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+          
+    </div>
+</main>
+            
+{% endblock %}

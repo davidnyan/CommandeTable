@@ -1,0 +1,51 @@
+{% extends 'layouts/base.html' %}  
+{% block content%}
+    {% include 'layouts/nav.html' %}
+    <main class=" py-3 px-1" id="main">
+      <div class="section-title">
+        <h2>Menu</h2>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <a href="{% url 'index' %}" class="btn text-white">Tous</a>
+        {% for i in all_categorie %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <input class="visually-hidden" type="text" name="categorie_id" value="{{ i.id }}">
+          <button type="submit" class="btn text-white">{{ i.categories}}</button>
+        </form>
+        {% endfor %}
+    </div>
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-6">
+        {% for product in  all_products %}
+        <div class="col py-1" data-aos="zoom-in" data-aos-delay="100" >
+          <div class="card text-white" style="background: rgb(30, 29, 29);" >
+            <img src="{{product.image.url}}" class="card-img-top" alt="..." height="160" width="20">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{product.name}}</h5>
+              <p class="card-text text-center">{{product.price|floatformat:"g"}}</p>
+              <div class="text-center">
+                <a href="{% url 'product_detail' product.pk product.slug %}" class="btn btn-primary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Commander<span class="btn  visually-hidden">{{product.name}}</span> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor%}
+      </div>
+    </main><!-- End #main -->
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a> 
+    {% if paginate %}
+      <nav aria_label="">
+        <ul class="pager">
+          {% if all_products.has_previous %}
+          <li class="btn"><a href="?page={{all_products.previous_page_number }}" class="btn btn-secondary"> &leftarrow;
+              precedent </a></li>
+          {% endif %}
+          <strong class="text-warning">{{all_products}}</strong>
+          {% if all_products.has_next %}
+          <li class="btn"><a href="?page={{all_products.next_page_number }}" class="btn btn-secondary">suivant
+              &rightarrow; </a></li>
+          {% endif %}
+        </ul>
+        {% endif %}
+    {% endblock%}

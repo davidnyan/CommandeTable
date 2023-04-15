@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}  
+{%block content%}
+<div class="container py-5">
+    <div class="row">
+        <strong class="bg-info text-center card">Identifiez-vous</strong>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4  gy-2">
+           
+            <div class="py-1">
+                <a href="{% url 'signin' %}" class="btn btn-primary btn form-control " >Connectez-vous</a>
+            </div>
+            <div>
+         
+                <a href="{% url 'signout' %}" class="btn btn-success btn form-control " >Decconection</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
